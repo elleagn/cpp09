@@ -6,14 +6,14 @@
 #    By: gozon <gozon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 11:02:35 by gozon             #+#    #+#              #
-#    Updated: 2025/07/24 17:41:08 by gozon            ###   ########.fr        #
+#    Updated: 2025/08/28 10:48:18 by gozon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = RPN
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
-CPP =	main.cpp
+CPP =	main.cpp RPN.cpp
 OBJ_DIR = objects
 OBJ = $(CPP:%.cpp=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:%.o=%.d)

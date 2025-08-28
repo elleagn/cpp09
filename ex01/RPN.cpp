@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 08:59:40 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/28 10:00:28 by gozon            ###   ########.fr       */
+/*   Updated: 2025/08/28 10:49:39 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ RPN::~RPN() {
 
 RPN& RPN::operator=(const RPN& src) {
     pile = src.pile;
+    return (*this);
 }
 
 bool isNumber(std::string str) {
-    for (int i = 0; i < str.size(); i++) {
+    for (size_t i = 0; i < str.size(); i++) {
         if (!isdigit(str[i]))
             return (false);
     }
@@ -47,29 +48,24 @@ bool isOperator(std::string str) {
     return (false);
 }
 
-bool RPN::treatOperator(char op) {
+bool RPN::treatOperator(std::string op) {
 
     if (pile.size() < 2)
-    {
-        std::cerr << "Invalid expression: not enough numbers." << std::endl;
         return (false);
-    }
 
     int a = pile.top();
     pile.pop();
     int b = pile.top();
     pile.pop();
 
-    if (op == '+')
+    if (op == "+")
         pile.push(a + b);
-    else if (op == '-')
+    else if (op == "-")
         pile.push(b - a);
-    else if (op == '*')
+    else if (op == "*")
         pile.push(b * a);
-    else if (a == 0) {
-        std::cerr << "Error: division by 0." << std::endl;
+    else if (a == 0 || op != "/")
         return (false);
-    }
     else
         pile.push(b / a);
 
@@ -79,8 +75,24 @@ bool RPN::treatOperator(char op) {
 
 void RPN::calculate(std::string expr) {
 
-    std::string::iterator it = expr.begin();
+    std::string current;
+    size_t space;
 
-    
+    for (size_t i = 0; i < expr.size(); i++) {
+        space = expr.find_first_of(' ', i);
+        current = expr.substr(i, space);
+        if (isNumber(current))
+            pile.push(atoi(current.c_str()));
+        else if (!treatOperator(current)) {
+            std::cerr << "Error" << std::endl;
+            return ;
+        }
+        i += space;
+    }
+    if (pile.size() != 1)
+        std::cerr << "Error" << std::endl;
+    else
+        std::cout << pile.top() << std::endl;
+    return ;
 
 }
