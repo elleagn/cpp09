@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:43:59 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/30 15:08:39 by gozon            ###   ########.fr       */
+/*   Updated: 2025/08/30 16:01:23 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,19 @@ void PmergeMe::swap(int i, int j) {
 
 }
 
+void PmergeMe::copyElement(int i, std::vector<int> dest) {
+    if (i >= size)
+        throw std::out_of_range("Index out of range");
+    for (int j = 0; j < elementSize; j++) {
+        dest.insert(dest.end(), vect[(i- 1) * elementSize + j]);
+    }
+}
+
+void PmergeMe::eraseElement(int i) {
+    vect.erase(vect.begin() + (i- 1) * elementSize, vect.begin() + i * elementSize);
+    size--;
+}
+
 std::vector<int> PmergeMe::extractLast() {
 
     std::vector<int> last;
@@ -73,6 +86,18 @@ std::vector<int> PmergeMe::extractLast() {
     size--;
 
     return (last);
+}
+
+std::vector<int> PmergeMe::extractPending() {
+
+    std::vector<int> pending;
+
+    for (int i = 1; i < size; i++) {
+        copyElement(i, pending);
+        eraseElement(i);
+    }
+
+    return (pending);
 }
 
 void PmergeMe::sortPairs() {
