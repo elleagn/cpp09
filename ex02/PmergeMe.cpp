@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:43:59 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/30 15:00:25 by gozon            ###   ########.fr       */
+/*   Updated: 2025/08/30 15:08:39 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ std::vector<int> PmergeMe::extractLast() {
     std::vector<int> last;
 
     for (int i = 0; i < elementSize; i++) {
-        last.insert(last.begin(), *vect.end());
+        last.insert(last.begin(), vect.back());
         vect.pop_back();
     }
 
