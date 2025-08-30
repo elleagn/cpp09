@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 09:24:19 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/30 14:14:48 by gozon            ###   ########.fr       */
+/*   Updated: 2025/08/30 14:56:46 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ class PmergeMe {
         int elementSize;
         int size;
 
-        std::vector<int> extractLast();
-
     public:
         PmergeMe();
         PmergeMe(std::vector<int> vect, int order);
@@ -33,8 +31,11 @@ class PmergeMe {
 
         PmergeMe&   operator=(const PmergeMe& src);
         int         operator[](int i) const;
+        const std::vector<int>& getVect() const;
+        std::vector<int> extractLast();
+        void sortPairs();
 
         void swap(int i, int j);
-        std::vector<int> sort();
+//        std::vector<int> sort();
 
 };

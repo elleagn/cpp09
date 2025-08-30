@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:43:59 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/30 14:20:56 by gozon            ###   ########.fr       */
+/*   Updated: 2025/08/30 15:00:25 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& src) {
 
     vect = src.vect;
     elementSize = src.elementSize;
-
+    return (*this);
 }
 
 int PmergeMe::operator[](int i) const {
@@ -42,6 +42,10 @@ int PmergeMe::operator[](int i) const {
         throw std::out_of_range("Index out of range");
     return (vect[ (i + 1) * elementSize - 1]);
 
+}
+
+const std::vector<int>& PmergeMe::getVect() const {
+    return (vect);
 }
 
 void PmergeMe::swap(int i, int j) {
@@ -62,28 +66,42 @@ std::vector<int> PmergeMe::extractLast() {
     std::vector<int> last;
 
     for (int i = 0; i < elementSize; i++) {
-        last.insert(last.end(), vect[size * elementSize + i])
+        last.insert(last.begin(), *vect.end());
+        vect.pop_back();
+    }
+
+    size--;
+
+    return (last);
+}
+
+void PmergeMe::sortPairs() {
+
+    for (int i = 0; i < size; i += 2) {
+        if ((*this)[i] > (*this)[i + 1])
+            swap(i, i + 1);
     }
 
 }
 
 
-std::vector<int> PmergeMe::sort() {
+// std::vector<int> PmergeMe::sort() {
 
-    std::vector<int> pending;
-    std::vector<int> leftover;
+//     std::vector<int> pending;
+//     std::vector<int> leftover;
 
-    if (size / 2)
-        leftover = extractLast();
-    sortPairs(vect);
-    elementSize *= 2;
-    size /= 2;
-    sort();
-    elementSize /= 2;
-    size *= 2;
+//     if (size / 2) {
+//         leftover = extractLast();
+//     }
+//     sortPairs();
+//     elementSize *= 2;
+//     size /= 2;
+//     sort();
+//     elementSize /= 2;
+//     size *= 2;
 
-    pending = extractPending();
+//     pending = extractPending();
 
-    insertPending(pending);
-    return (vect);
-}
+//     insertPending(pending);
+//     return (vect);
+// }
