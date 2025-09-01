@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/01 09:50:01 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/01 13:55:51 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,32 @@ std::vector<Number> PmergeMe::extractPending() {
         erase(end() - 1);
 
     }
+}
+
+void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
+
+    for (size_t i = 0; i <= size(); i++) {
+
+        pending[at(i).index[order]].index[order] = i;
+        at(i).index[order] = i;
+
+    }
+
+    Number tmp;
+    for (size_t i = 0; i <= pending.size(); i++) {
+
+        if (pending[i].index[order] != i) {
+            tmp = pending[i];
+            pending[i] = pending[pending[i].index[order]];
+            pending[pending[i].index[order]] = tmp;
+        }
+
+    }
+
+}
+
+void PmergeMe::insert(std::vector<Number>& pending, size_t order) {
+
+    renumber(pending, order);
+
 }

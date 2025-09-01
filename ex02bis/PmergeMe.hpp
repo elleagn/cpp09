@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:11:24 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/01 09:35:24 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/01 13:08:22 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ struct Number {
 class PmergeMe: public std::vector<Number> {
 
 
+    private:
+        void renumber(std::vector<Number>& pending, size_t order);
+
     public:
 
         PmergeMe();
@@ -37,5 +40,6 @@ class PmergeMe: public std::vector<Number> {
         PmergeMe& operator=(const PmergeMe& src);
 
         std::vector<Number> extractPending();
+        void                insert(std::vector<Number>& pending, size_t order);
 
 };
