@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/01 13:55:51 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 09:09:27 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@ PmergeMe::PmergeMe(const PmergeMe& src) {
 }
 
 PmergeMe::PmergeMe(const std::vector<Number>& values) {
+
+    size_t valuesSize = values.size();
+    size_t twoPow = 1;
+    size_t tk = 0;
+
+    while (tk <= valuesSize) {
+        tk = twoPow - tk;
+        jacobsthal.insert(jacobsthal.end(), tk);
+        twoPow *= 2;
+    }
+
 
     assign(values.begin(), values.end());
 
@@ -95,7 +106,21 @@ void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
 
 }
 
-void PmergeMe::insert(std::vector<Number>& pending, size_t order) {
+void PmergeMe::binaryInsert(Number nb, size_t a, size_t b) {
+
+    while (b - a > 1) {
+        if (nb.value > at(a + (b - a) / 2).value) {
+            a = a + (b - a) / 2;
+        }
+        else
+            b = a + (b - a) / 2;
+    }
+
+    insert(begin() + b, nb);
+
+}
+
+void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
 
     renumber(pending, order);
 
