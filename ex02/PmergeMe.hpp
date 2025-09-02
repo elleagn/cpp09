@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:11:24 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 09:03:53 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 10:16:42 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class PmergeMe: public std::vector<Number> {
 
     private:
         void renumber(std::vector<Number>& pending, size_t order);
+        size_t findUpperIndex(size_t k, size_t indexMax, size_t order);
         std::vector<size_t> jacobsthal;
 
     public:

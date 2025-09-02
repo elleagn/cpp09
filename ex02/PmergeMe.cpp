@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 09:09:27 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 10:52:39 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ PmergeMe::~PmergeMe() {
 PmergeMe& PmergeMe::operator=(const PmergeMe& src) {
 
     assign(src.begin(), src.end());
-
+    return (*this);
 }
 
 std::vector<Number> PmergeMe::extractPending() {
@@ -82,6 +82,8 @@ std::vector<Number> PmergeMe::extractPending() {
         erase(end() - 1);
 
     }
+
+    return (pending);
 }
 
 void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
@@ -120,8 +122,33 @@ void PmergeMe::binaryInsert(Number nb, size_t a, size_t b) {
 
 }
 
+size_t PmergeMe::findUpperIndex(size_t k, size_t indexMax, size_t order) {
+
+    size_t i = indexMax;
+
+    while (!at(indexMax).ab[order] || at(indexMax).index[order] != k)
+        i--;
+
+    return (i);
+}
+
 void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
 
     renumber(pending, order);
+    insert(begin(), pending[0]);
+
+    size_t jacobMax = size();
+    for (size_t i = 1; jacobsthal[i] < jacobMax; i++) {
+
+        size_t upperIndex = std::min(jacobsthal[i - 1] + jacobsthal[i] - 2, size());
+
+        for (size_t k = std::min(jacobMax, jacobsthal[i]) - 1; k >= jacobsthal[i - 1]; k--) {
+
+            upperIndex = findUpperIndex(k, upperIndex, order);
+            binaryInsert(pending[k], 0, upperIndex);
+
+        }
+
+    }
 
 }
