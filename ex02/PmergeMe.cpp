@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 14:14:51 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 14:39:42 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,12 @@ void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
         at(i).index[order] = i;
     }
 
+    std::cout << "Pending after renumbered" << std::endl;
+    for (size_t i = 0; i < pending.size(); i++) {
+        pending[i].print(order);
+        std::cout << " ";
+    }
+    std::cout << std::endl;
     Number tmp;
     for (size_t i = 0; i < pending.size(); i++) {
 
