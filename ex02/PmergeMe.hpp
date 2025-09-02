@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:11:24 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 10:16:42 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 11:07:17 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <vector>
 #include <stddef.h>
 #include <algorithm>
+#include <iostream>
 
 struct Number {
 

@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 10:52:39 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 11:40:40 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,12 @@ std::vector<Number> PmergeMe::extractPending() {
     std::vector<Number> pending;
     Number              nextB;
     size_t              index = 0;
-    bool                leftover = size() / 2;
+    bool                leftover = size() % 2;
 
-    for (PmergeMe::iterator it = begin(); it != end() && it + 1 != end(); it = it++) {
+    for (PmergeMe::iterator it = begin(); it != end() && it + 1 != end(); it++) {
 
-        if ((*it).value < (*(it + 1)). value) {
+        std::cout << "it & it + 1 value: " << (*it).value << " " << (*(it + 1)).value <<std::endl;
+        if ((*it).value < (*(it + 1)).value) {
             nextB = *it;
             it = erase(it);
         }
@@ -82,21 +83,23 @@ std::vector<Number> PmergeMe::extractPending() {
         erase(end() - 1);
 
     }
-
+    std::cout << "Pending" << std::endl;
+    for (size_t i = 0; i < pending.size(); i++) {
+        std::cout << pending[i].value << " ";
+    }
+    std::cout << std::endl;
     return (pending);
 }
 
 void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
 
-    for (size_t i = 0; i <= size(); i++) {
-
+    for (size_t i = 0; i < size(); i++) {
         pending[at(i).index[order]].index[order] = i;
         at(i).index[order] = i;
-
     }
 
     Number tmp;
-    for (size_t i = 0; i <= pending.size(); i++) {
+    for (size_t i = 0; i < pending.size(); i++) {
 
         if (pending[i].index[order] != i) {
             tmp = pending[i];
@@ -135,6 +138,7 @@ size_t PmergeMe::findUpperIndex(size_t k, size_t indexMax, size_t order) {
 void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
 
     renumber(pending, order);
+    std::cout << "renumbered order: " << order << std::endl;
     insert(begin(), pending[0]);
 
     size_t jacobMax = size();
@@ -151,4 +155,8 @@ void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
 
     }
 
+    if (pending.size() > jacobMax) {
+        binaryInsert(pending.back(), 0, size() - 1);
+    }
+    std::cout << "insert finished order: " << order << std::endl;
 }
