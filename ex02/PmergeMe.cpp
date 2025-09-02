@@ -5,128 +5,98 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/30 11:43:59 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/30 16:01:23 by gozon            ###   ########.fr       */
+/*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
+/*   Updated: 2025/09/01 13:55:51 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe(): vect(std::vector<int>()) {
+PmergeMe::PmergeMe() {
 
 }
 
-// maybe by reference
-PmergeMe::PmergeMe(std::vector<int> vect, int elementSize): vect(vect), elementSize(elementSize) {
-    size = vect.size() / elementSize;
+PmergeMe::PmergeMe(const PmergeMe& src) {
+
+    assign(src.begin(), src.end());
+
+}
+
+PmergeMe::PmergeMe(const std::vector<Number>& values) {
+
+    assign(values.begin(), values.end());
+
 }
 
 PmergeMe::~PmergeMe() {
 
 }
 
-PmergeMe::PmergeMe(const PmergeMe& src): vect(src.vect), elementSize(src.elementSize) {
-
-}
-
 PmergeMe& PmergeMe::operator=(const PmergeMe& src) {
 
-    vect = src.vect;
-    elementSize = src.elementSize;
-    return (*this);
-}
-
-int PmergeMe::operator[](int i) const {
-
-    if (i >= size)
-        throw std::out_of_range("Index out of range");
-    return (vect[ (i + 1) * elementSize - 1]);
+    assign(src.begin(), src.end());
 
 }
 
-const std::vector<int>& PmergeMe::getVect() const {
-    return (vect);
+std::vector<Number> PmergeMe::extractPending() {
+
+    std::vector<Number> pending;
+    Number              nextB;
+    size_t              index = 0;
+    bool                leftover = size() / 2;
+
+    for (PmergeMe::iterator it = begin(); it != end() && it + 1 != end(); it = it++) {
+
+        if ((*it).value < (*(it + 1)). value) {
+            nextB = *it;
+            it = erase(it);
+        }
+        else {
+            nextB = *(it + 1);
+            erase(it + 1);
+        }
+        (*it).ab.push_back(1);
+        (*it).index.push_back(index);
+        nextB.ab.push_back(0);
+        nextB.index.push_back(index);
+        pending.push_back(nextB);
+        index++;
+    }
+
+    if (leftover) {
+
+        back().ab.push_back(0);
+        back().index.push_back(index);
+        pending.push_back(back());
+        erase(end() - 1);
+
+    }
 }
 
-void PmergeMe::swap(int i, int j) {
+void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
 
-    if (i >= size)
-        throw std::out_of_range("Index out of range");
-    if (j >= size)
-        throw std::out_of_range("Index out of range");
+    for (size_t i = 0; i <= size(); i++) {
 
-    for (int k = 0; k < elementSize; k++) {
-        std::swap(vect[i * elementSize + k], vect[j * elementSize + k]);
+        pending[at(i).index[order]].index[order] = i;
+        at(i).index[order] = i;
+
+    }
+
+    Number tmp;
+    for (size_t i = 0; i <= pending.size(); i++) {
+
+        if (pending[i].index[order] != i) {
+            tmp = pending[i];
+            pending[i] = pending[pending[i].index[order]];
+            pending[pending[i].index[order]] = tmp;
+        }
+
     }
 
 }
 
-void PmergeMe::copyElement(int i, std::vector<int> dest) {
-    if (i >= size)
-        throw std::out_of_range("Index out of range");
-    for (int j = 0; j < elementSize; j++) {
-        dest.insert(dest.end(), vect[(i- 1) * elementSize + j]);
-    }
-}
+void PmergeMe::insert(std::vector<Number>& pending, size_t order) {
 
-void PmergeMe::eraseElement(int i) {
-    vect.erase(vect.begin() + (i- 1) * elementSize, vect.begin() + i * elementSize);
-    size--;
-}
-
-std::vector<int> PmergeMe::extractLast() {
-
-    std::vector<int> last;
-
-    for (int i = 0; i < elementSize; i++) {
-        last.insert(last.begin(), vect.back());
-        vect.pop_back();
-    }
-
-    size--;
-
-    return (last);
-}
-
-std::vector<int> PmergeMe::extractPending() {
-
-    std::vector<int> pending;
-
-    for (int i = 1; i < size; i++) {
-        copyElement(i, pending);
-        eraseElement(i);
-    }
-
-    return (pending);
-}
-
-void PmergeMe::sortPairs() {
-
-    for (int i = 0; i < size; i += 2) {
-        if ((*this)[i] > (*this)[i + 1])
-            swap(i, i + 1);
-    }
+    renumber(pending, order);
 
 }
-
-
-// std::vector<int> PmergeMe::sort() {
-
-//     std::vector<int> pending;
-//     std::vector<int> leftover;
-
-//     if (size / 2) {
-//         leftover = extractLast();
-//     }
-//     sortPairs();
-//     elementSize *= 2;
-//     size /= 2;
-//     sort();
-//     elementSize /= 2;
-//     size *= 2;
-
-//     pending = extractPending();
-
-//     insertPending(pending);
-//     return (vect);
-// }
