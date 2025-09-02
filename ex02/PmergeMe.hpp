@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:11:24 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 11:07:17 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/02 12:59:36 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 #include <algorithm>
 #include <iostream>
 
-struct Number {
+class Number {
 
-    unsigned int        value;
-    std::vector<bool>   ab;
-    std::vector<size_t> index;
+    public:
+        unsigned int        value;
+        std::vector<bool>   ab;
+        std::vector<size_t> index;
+        void print(size_t order) const;
 
 };
 
