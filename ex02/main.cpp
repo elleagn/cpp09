@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 13:05:10 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 11:38:06 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ int main(void) {
 
     std::cout << "Shuffled" << std::endl;
     PmergeMe thing(vect);
-    sort(thing, 0);
+    try {
+        sort(thing, 0);
+    }
+    catch (std::exception& e) {
+        return (1);
+    }
     std::cout << "Sorted" << std::endl;
     for (int i = 0; i < 100; i++) {
         std::cout << thing[i].value << " ";

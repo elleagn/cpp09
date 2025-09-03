@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 08:53:33 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 11:50:21 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,6 @@ std::vector<Number> PmergeMe::extractPending() {
         erase(end() - 1);
 
     }
-    std::cout << "Pending" << std::endl;
-    for (size_t i = 0; i < pending.size(); i++) {
-        pending[i].print(pending[i].ab.size() - 1);
-        std::cout << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "main" << std::endl;
-    for (size_t i = 0; i < size(); i++) {
-        at(i).print(at(i).ab.size() - 1);
-        std::cout << " ";
-    }
-    std::cout << std::endl;
     return (pending);
 }
 
@@ -107,16 +95,10 @@ void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
         at(i).index[order] = i;
     }
 
-    std::cout << "Pending after renumbered" << std::endl;
-    for (size_t i = 0; i < pending.size(); i++) {
-        pending[i].print(order);
-        std::cout << " ";
-    }
-    std::cout << std::endl;
     Number tmp;
     for (size_t i = 0; i < pending.size(); i++) {
 
-        if (pending[i].index[order] != i) {
+        while (pending[i].index[order] != i) {
             std::swap(pending[i], pending[pending[i].index[order]]);
         }
 
@@ -128,6 +110,10 @@ void PmergeMe::binaryInsert(Number nb, size_t a, size_t b) {
 
     if (at(b).value <= nb.value){
         insert(end(), nb);
+        return ;
+    }
+    if (at(a).value >= nb.value){
+        insert(begin(), nb);
         return ;
     }
     while (b - a > 1) {
@@ -146,7 +132,7 @@ size_t PmergeMe::findUpperIndex(size_t k, size_t indexMax, size_t order) {
 
     size_t i = indexMax;
 
-    while (!at(indexMax).ab[order] || at(indexMax).index[order] != k)
+    while (!at(i).ab[order] || at(i).index[order] != k)
         i--;
 
     return (i);
@@ -154,20 +140,14 @@ size_t PmergeMe::findUpperIndex(size_t k, size_t indexMax, size_t order) {
 
 void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
 
-    std::cout << "main before renumbered: ";
+    renumber(pending, order);
+    std::cout << "main: ";
     for (size_t i = 0; i < size(); i++) {
         at(i).print(order);
         std::cout << " ";
     }
     std::cout << std::endl;
-    std::cout << "Pending before renumbered" << std::endl;
-    for (size_t i = 0; i < pending.size(); i++) {
-        pending[i].print(order);
-        std::cout << " ";
-    }
-    std::cout << std::endl;
-    renumber(pending, order);
-    std::cout << "Pending after renumbered" << std::endl;
+    std::cout << "Pending" << std::endl;
     for (size_t i = 0; i < pending.size(); i++) {
         pending[i].print(order);
         std::cout << " ";
@@ -176,15 +156,32 @@ void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
     size_t jacobMax = size();
     insert(begin(), pending[0]);
 
-    for (size_t i = 1; jacobsthal[i] < jacobMax; i++) {
+    for (size_t i = 1; jacobsthal[i - 1] < jacobMax; i++) {
 
-        size_t upperIndex = std::min(jacobsthal[i - 1] + jacobsthal[i] - 2, size());
+        size_t upperIndex = std::min(jacobsthal[i - 1] + jacobsthal[i], size()) - 1;
         std::cout << "Upper index: " << upperIndex << std::endl;
 
         for (size_t k = std::min(jacobMax, jacobsthal[i]) - 1; k >= jacobsthal[i - 1]; k--) {
 
+            std::cout << "before fup"<< std::endl;
             upperIndex = findUpperIndex(k, upperIndex, order);
+            std::cout << "Upper index: " << upperIndex << std::endl;
+            std::cout << "k: " << k << " " ;
+            pending[k].print(order);
+            std::cout << " ";
+            at(upperIndex).print(order);
+            std::cout << std::endl;
             binaryInsert(pending[k], 0, upperIndex);
+            std::cout << "after binsert" << std::endl;
+            if (!is_sorted()) {
+                std::cout << "PROBLEM: ";
+                for (size_t i = 0; i < size(); i++) {
+                    at(i).print(order);
+                    std::cout << " ";
+                }
+                std::cout << std::endl;
+                throw std::runtime_error("not sorted");
+            }
 
         }
 
@@ -193,4 +190,12 @@ void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
     if (pending.size() > jacobMax) {
         binaryInsert(pending.back(), 0, size() - 1);
     }
+}
+
+bool PmergeMe::is_sorted() {
+    for (size_t i = 0; i + 1 < size(); i++) {
+        if (at(i) > at(i + 1))
+            return (false);
+    }
+    return (true);
 }

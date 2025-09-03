@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:11:24 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 08:45:52 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 11:27:30 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@ class PmergeMe: public std::vector<Number> {
         std::vector<Number> extractPending();
         void                merge(std::vector<Number>& pending, size_t order);
         void                binaryInsert(Number nb, size_t a, size_t b);
+
+        bool is_sorted();
 
 };

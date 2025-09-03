@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:41:26 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 08:46:03 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 11:32:40 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ class Number {
         ~Number();
 
         Number& operator=(const Number& src);
+        bool    operator<(const Number& comp) const;
+        bool    operator>(const Number& comp) const;
+        bool    operator<=(const Number& comp) const;
+        bool    operator>=(const Number& comp) const;
 
         void print(size_t order) const;
 

@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:45:22 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 08:51:39 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 11:34:00 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ Number& Number::operator=(const Number& src) {
 
     return (*this);
 
+}
+
+bool Number::operator<(const Number& comp) const {
+    return (value < comp.value);
+}
+
+bool Number::operator>(const Number& comp) const {
+    return (value > comp.value);
+}
+
+bool Number::operator<=(const Number& comp) const {
+    return (value <= comp.value);
+}
+
+bool Number::operator>=(const Number& comp) const {
+    return (value >= comp.value);
 }
 
 void Number::print(size_t order) const {
