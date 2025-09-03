@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 14:38:01 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 15:01:13 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ std::vector<Number> PmergeMe::extractPending() {
 
     for (PmergeMe::iterator it = begin(); it != end() && it + 1 != end(); it++) {
 
-        if ((*it).value < (*(it + 1)).value) {
+        if (*it < *(it + 1)) {
             nextB = *it;
             it = erase(it);
         }
@@ -69,10 +69,8 @@ std::vector<Number> PmergeMe::extractPending() {
             nextB = *(it + 1);
             erase(it + 1);
         }
-        (*it).ab.push_back(1);
-        (*it).index.push_back(index);
-        nextB.ab.push_back(0);
-        nextB.index.push_back(index);
+        (*it).addLabel('a', index);
+        nextB.addLabel('b', index);
         pending.push_back(nextB);
         index++;
     }
