@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 11:38:06 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 14:40:46 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 void sort(PmergeMe& values, size_t order) {
 
-    std::cout << "In sort, order: " << order << std::endl;
     if (values.size() == 1)
         return ;
     std::vector<Number> pending = values.extractPending();
@@ -34,12 +33,13 @@ int main(void) {
     }
 
     std::random_shuffle(vect.begin(), vect.end());
+
+    std::cout << "Shuffled" << std::endl;
     for (int i = 0; i < 100; i++) {
         std::cout << vect[i].value << " ";
     }
     std::cout << std::endl;
 
-    std::cout << "Shuffled" << std::endl;
     PmergeMe thing(vect);
     try {
         sort(thing, 0);
@@ -47,7 +47,10 @@ int main(void) {
     catch (std::exception& e) {
         return (1);
     }
-    std::cout << "Sorted" << std::endl;
+    if (thing.is_sorted())
+        std::cout << "Sorted ok" << std::endl;
+    else
+        std::cout << "Sorted ko" << std::endl;
     for (int i = 0; i < 100; i++) {
         std::cout << thing[i].value << " ";
     }
