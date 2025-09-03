@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/02 14:39:42 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/03 08:53:33 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,7 @@ void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
     for (size_t i = 0; i < pending.size(); i++) {
 
         if (pending[i].index[order] != i) {
-            tmp = pending[i];
-            pending[i] = pending[pending[i].index[order]];
-            pending[pending[i].index[order]] = tmp;
+            std::swap(pending[i], pending[pending[i].index[order]]);
         }
 
     }
@@ -195,10 +193,4 @@ void PmergeMe::merge(std::vector<Number>& pending, size_t order) {
     if (pending.size() > jacobMax) {
         binaryInsert(pending.back(), 0, size() - 1);
     }
-}
-
-void Number::print(size_t order) const {
-
-    std::cout << "[" << (ab[order]==1?"a":"b") << index[order] << ": " << value << "]";
-
 }
