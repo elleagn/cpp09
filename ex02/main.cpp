@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 14:40:46 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 08:56:00 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int main(void) {
     Number num;
 
     for (int i = 0; i < 100; i++) {
-        num.value = i;
+        num.setValue(i);
         vect.insert(vect.end(), num);
     }
 
@@ -36,7 +36,7 @@ int main(void) {
 
     std::cout << "Shuffled" << std::endl;
     for (int i = 0; i < 100; i++) {
-        std::cout << vect[i].value << " ";
+        std::cout << vect[i].getValue() << " ";
     }
     std::cout << std::endl;
 
@@ -52,7 +52,7 @@ int main(void) {
     else
         std::cout << "Sorted ko" << std::endl;
     for (int i = 0; i < 100; i++) {
-        std::cout << thing[i].value << " ";
+        std::cout << thing[i].getValue() << " ";
     }
     std::cout << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/03 15:01:13 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 08:28:14 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,15 @@ std::vector<Number> PmergeMe::extractPending() {
             nextB = *(it + 1);
             erase(it + 1);
         }
-        (*it).addLabel('a', index);
-        nextB.addLabel('b', index);
+        (*it).changeLabel('a', index);
+        nextB.changeLabel('b', index);
         pending.push_back(nextB);
         index++;
     }
 
     if (leftover) {
 
-        back().ab.push_back(0);
-        back().index.push_back(index);
+        back().changeLabel('b', index);
         pending.push_back(back());
         erase(end() - 1);
 
@@ -89,15 +88,15 @@ std::vector<Number> PmergeMe::extractPending() {
 void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
 
     for (size_t i = 0; i < size(); i++) {
-        pending[at(i).index[order]].index[order] = i;
-        at(i).index[order] = i;
+        pending[at(i).getIndex(order)].changeLabel(0, i, order);
+        at(i).changeLabel(0, i, order);
     }
 
     Number tmp;
     for (size_t i = 0; i < pending.size(); i++) {
 
-        while (pending[i].index[order] != i) {
-            std::swap(pending[i], pending[pending[i].index[order]]);
+        while (pending[i].getIndex(order) != i) {
+            std::swap(pending[i], pending[pending[i].getIndex(order)]);
         }
 
     }
@@ -106,16 +105,16 @@ void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
 
 void PmergeMe::binaryInsert(Number nb, size_t a, size_t b) {
 
-    if (at(b).value <= nb.value){
+    if (at(b) <= nb){
         insert(end(), nb);
         return ;
     }
-    if (at(a).value >= nb.value){
+    if (at(a) >= nb){
         insert(begin(), nb);
         return ;
     }
     while (b - a > 1) {
-        if (nb.value > at(a + (b - a) / 2).value) {
+        if (nb > at(a + (b - a) / 2)) {
             a = a + (b - a) / 2;
         }
         else
@@ -130,7 +129,7 @@ size_t PmergeMe::findUpperIndex(size_t k, size_t indexMax, size_t order) {
 
     size_t i = indexMax;
 
-    while (!at(i).ab[order] || at(i).index[order] != k)
+    while (!at(i).isA(order) || at(i).getIndex(order) != k)
         i--;
 
     return (i);
