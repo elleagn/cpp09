@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:41:26 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 08:55:42 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 13:24:48 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@
 class Number {
 
     private:
-        unsigned long       value;
-        std::vector<bool>   ab;
-        std::vector<size_t> index;
+        unsigned long   value;
+        size_t          size;
+        size_t          end;
+        bool*           ab;
+        size_t*         index;
+
+        Number();
 
     public:
 
-        Number();
-        Number(unsigned long value);
+        Number(unsigned long value, size_t size);
         Number(const Number& src);
         ~Number();
 

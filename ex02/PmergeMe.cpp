@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 08:28:14 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 13:57:43 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ PmergeMe::PmergeMe(const PmergeMe& src) {
 
 PmergeMe::PmergeMe(const std::vector<Number>& values) {
 
-    size_t valuesSize = values.size();
+    orderMax = values.size() / 2;
     size_t twoPow = 2;
     size_t tk = 1;
 
     std::cout << "jacobsthal:";
-    while (tk <= valuesSize) {
+    while (tk <= orderMax) {
         tk = twoPow - tk;
         std::cout << " " << tk;
         jacobsthal.insert(jacobsthal.end(), tk);
@@ -55,7 +55,7 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& src) {
 std::vector<Number> PmergeMe::extractPending() {
 
     std::vector<Number> pending;
-    Number              nextB;
+    Number              nextB(0, orderMax);
     size_t              index = 0;
     bool                leftover = size() % 2;
 
@@ -92,7 +92,7 @@ void PmergeMe::renumber(std::vector<Number>& pending, size_t order) {
         at(i).changeLabel(0, i, order);
     }
 
-    Number tmp;
+    Number tmp(0, orderMax);
     for (size_t i = 0; i < pending.size(); i++) {
 
         while (pending[i].getIndex(order) != i) {
