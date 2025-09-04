@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 14:31:06 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 14:54:13 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,17 @@ std::deque<Number> PmergeMeD::extractPending() {
     size_t              index = 0;
     bool                leftover = size() % 2;
 
-    for (PmergeMeD::iterator it = begin(); it != end() && it + 1 != end(); it++) {
+    for (size_t i = 0; i + 1 < size(); i++) {
 
-        if (*it < *(it + 1)) {
-            nextB = *it;
-            it = erase(it);
+        if (at(i) < at(i + 1)) {
+            nextB = at(i);
+            erase(begin() + i);
         }
         else {
-            nextB = *(it + 1);
-            erase(it + 1);
+            nextB = at(i + 1);
+            erase(begin() + i + 1);
         }
-        (*it).changeLabel('a', index);
+        at(i).changeLabel('a', index);
         nextB.changeLabel('b', index);
         pending.push_back(nextB);
         index++;
