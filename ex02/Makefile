@@ -6,14 +6,14 @@
 #    By: gozon <gozon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 11:02:35 by gozon             #+#    #+#              #
-#    Updated: 2025/09/03 08:53:53 by gozon            ###   ########.fr        #
+#    Updated: 2025/09/04 14:36:49 by gozon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = PmergeMe
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
-CPP =	main.cpp PmergeMe.cpp Number.cpp
+CPP =	main.cpp PmergeMe.cpp Number.cpp PmergeMeD.cpp
 OBJ_DIR = objects
 OBJ = $(CPP:%.cpp=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:%.o=%.d)

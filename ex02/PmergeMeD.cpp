@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
+/*   PmergeMeD.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 14:28:05 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 14:31:06 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-PmergeMeV::PmergeMeV() {
+PmergeMeD::PmergeMeD() {
 
 }
 
-PmergeMeV::PmergeMeV(const PmergeMeV& src) {
+PmergeMeD::PmergeMeD(const PmergeMeD& src) {
 
     assign(src.begin(), src.end());
 
 }
 
-PmergeMeV::PmergeMeV(const std::vector<Number>& values) {
+PmergeMeD::PmergeMeD(const std::deque<Number>& values) {
 
     orderMax = values.size() / 2;
     size_t twoPow = 2;
@@ -42,24 +42,24 @@ PmergeMeV::PmergeMeV(const std::vector<Number>& values) {
 
 }
 
-PmergeMeV::~PmergeMeV() {
+PmergeMeD::~PmergeMeD() {
 
 }
 
-PmergeMeV& PmergeMeV::operator=(const PmergeMeV& src) {
+PmergeMeD& PmergeMeD::operator=(const PmergeMeD& src) {
 
     assign(src.begin(), src.end());
     return (*this);
 }
 
-std::vector<Number> PmergeMeV::extractPending() {
+std::deque<Number> PmergeMeD::extractPending() {
 
-    std::vector<Number> pending;
+    std::deque<Number> pending;
     Number              nextB(0, orderMax);
     size_t              index = 0;
     bool                leftover = size() % 2;
 
-    for (PmergeMeV::iterator it = begin(); it != end() && it + 1 != end(); it++) {
+    for (PmergeMeD::iterator it = begin(); it != end() && it + 1 != end(); it++) {
 
         if (*it < *(it + 1)) {
             nextB = *it;
@@ -85,7 +85,7 @@ std::vector<Number> PmergeMeV::extractPending() {
     return (pending);
 }
 
-void PmergeMeV::renumber(std::vector<Number>& pending, size_t order) {
+void PmergeMeD::renumber(std::deque<Number>& pending, size_t order) {
 
     for (size_t i = 0; i < size(); i++) {
         pending[at(i).getIndex(order)].changeLabel(0, i, order);
@@ -103,7 +103,7 @@ void PmergeMeV::renumber(std::vector<Number>& pending, size_t order) {
 
 }
 
-void PmergeMeV::binaryInsert(Number nb, size_t a, size_t b) {
+void PmergeMeD::binaryInsert(Number nb, size_t a, size_t b) {
 
     if (at(b) <= nb){
         insert(end(), nb);
@@ -125,7 +125,7 @@ void PmergeMeV::binaryInsert(Number nb, size_t a, size_t b) {
 
 }
 
-size_t PmergeMeV::findUpperIndex(size_t k, size_t indexMax, size_t order) {
+size_t PmergeMeD::findUpperIndex(size_t k, size_t indexMax, size_t order) {
 
     size_t i = indexMax;
 
@@ -135,7 +135,7 @@ size_t PmergeMeV::findUpperIndex(size_t k, size_t indexMax, size_t order) {
     return (i);
 }
 
-void PmergeMeV::merge(std::vector<Number>& pending, size_t order) {
+void PmergeMeD::merge(std::deque<Number>& pending, size_t order) {
 
     renumber(pending, order);
     size_t jacobMax = size();
@@ -159,7 +159,7 @@ void PmergeMeV::merge(std::vector<Number>& pending, size_t order) {
     }
 }
 
-bool PmergeMeV::is_sorted() {
+bool PmergeMeD::is_sorted() {
     for (size_t i = 0; i + 1 < size(); i++) {
         if (at(i) > at(i + 1))
             return (false);

@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 13:39:27 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 14:37:34 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,21 @@
 #include <ctime>
 #include <iomanip>
 
-void sort(PmergeMe& values, size_t order) {
+void sort(PmergeMeV& values, size_t order) {
 
     if (values.size() == 1)
         return ;
     std::vector<Number> pending = values.extractPending();
+    sort(values, order + 1);
+    values.merge(pending, order);
+
+}
+
+void sort(PmergeMeD& values, size_t order) {
+
+    if (values.size() == 1)
+        return ;
+    std::deque<Number> pending = values.extractPending();
     sort(values, order + 1);
     values.merge(pending, order);
 
@@ -49,7 +59,7 @@ int main(int ac, char **av) {
 
     clock_t c_start;
     clock_t c_end;
-    PmergeMe thing(vect);
+    PmergeMeV thing(vect);
     try {
         c_start = clock();
         sort(thing, 0);
@@ -70,7 +80,27 @@ int main(int ac, char **av) {
     std::cout <<std::endl;
 
     std::cout   << std::fixed << std::setprecision(6) << "Time to sort "
-                << size <<" elements: "
+                << size <<" elements with std::vector: "
+                << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << "us" << std::endl;
+
+    std::deque<Number> valuesD;
+    valuesD.assign(vect.begin(), vect.end());
+    PmergeMeD thingD(valuesD);
+    try {
+        c_start = clock();
+        sort(thingD, 0);
+        c_end = clock();
+    }
+    catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return (1);
+    }
+    if (!thingD.is_sorted()) {
+        std::cout << "Error: sequence is not sorted." << std::endl;
+        return (1);
+    }
+    std::cout   << std::fixed << std::setprecision(6) << "Time to sort "
+                << size <<" elements with std::deque: "
                 << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << "us" << std::endl;
     return (0);
 }

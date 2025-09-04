@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:11:24 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 13:57:58 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/04 14:30:32 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <stddef.h>
 #include <algorithm>
 #include <iostream>
+#include <deque>
 
 #include "Number.hpp"
 
-class PmergeMe: public std::vector<Number> {
+class PmergeMeV: public std::vector<Number> {
 
 
     private:
@@ -30,15 +31,41 @@ class PmergeMe: public std::vector<Number> {
 
     public:
 
-        PmergeMe();
-        PmergeMe(const PmergeMe& src);
-        PmergeMe(const std::vector<Number>& values);
-        ~PmergeMe();
+        PmergeMeV();
+        PmergeMeV(const PmergeMeV& src);
+        PmergeMeV(const std::vector<Number>& values);
+        ~PmergeMeV();
 
-        PmergeMe& operator=(const PmergeMe& src);
+        PmergeMeV& operator=(const PmergeMeV& src);
 
         std::vector<Number> extractPending();
         void                merge(std::vector<Number>& pending, size_t order);
+        void                binaryInsert(Number nb, size_t a, size_t b);
+
+        bool is_sorted();
+
+};
+
+class PmergeMeD: public std::deque<Number> {
+
+
+    private:
+        void renumber(std::deque<Number>& pending, size_t order);
+        size_t findUpperIndex(size_t k, size_t indexMax, size_t order);
+        size_t  orderMax;
+        std::deque<size_t> jacobsthal;
+
+    public:
+
+        PmergeMeD();
+        PmergeMeD(const PmergeMeD& src);
+        PmergeMeD(const std::deque<Number>& values);
+        ~PmergeMeD();
+
+        PmergeMeD& operator=(const PmergeMeD& src);
+
+        std::deque<Number> extractPending();
+        void                merge(std::deque<Number>& pending, size_t order);
         void                binaryInsert(Number nb, size_t a, size_t b);
 
         bool is_sorted();
