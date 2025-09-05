@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 09:10:10 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 10:49:20 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int main(int ac, char **av) {
     }
     std::cout <<std::endl;
 
-    std::cout   << std::fixed << std::setprecision(6) << "Time to sort "
+    std::cout   << std::fixed << std::setprecision(3) << "Time to sort "
                 << size <<" elements with std::vector: "
                 << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << "us" << std::endl;
 
@@ -121,7 +121,7 @@ int main(int ac, char **av) {
         std::cout << "Error: sequence is not sorted." << std::endl;
         return (1);
     }
-    std::cout   << std::fixed << std::setprecision(6) << "Time to sort "
+    std::cout   << std::fixed << std::setprecision(3) << "Time to sort "
                 << size <<" elements with std::deque: "
                 << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << "us" << std::endl;
     return (0);
