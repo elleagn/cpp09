@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/13 13:32:39 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 10:14:04 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,23 @@ BitcoinExchange::BitcoinExchange(std::string file) {
     }
 
     std::string line;
+    std::string date;
+    double      value;
+    char*       end;
     std::getline(data, line);
+    while (std::getline(data, line)) {
+        date = line.substr(0, line.find(','));
+        if (checkDateFormat(date))
+            throw (std::invalid_argument("Format error in database"));
+        value = strtod(line.substr(line.find(',') + 1).c_str(), &end);
+        if (*end || value < 0)
+            throw (std::invalid_argument("Format error in database"));
+        database[date] = value;
+    }
+    if (data.bad()) {
+        throw (std::runtime_error("Error reading database"));
+    }
 
-    
 }
 
 bool BitcoinExchange::checkDateFormat(std::string date) {

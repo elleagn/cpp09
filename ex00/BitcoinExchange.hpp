@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:55:02 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/13 13:29:18 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 09:57:49 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <cstdlib>
 
 class BitcoinExchange {
 
@@ -32,7 +33,7 @@ class BitcoinExchange {
         static std::string currentDate;
 
     public:
-        BitcoinExchange(std::string file);
+        BitcoinExchange(std::string data);
         BitcoinExchange(const BitcoinExchange& src);
         ~BitcoinExchange();
 
