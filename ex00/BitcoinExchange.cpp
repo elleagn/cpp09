@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 11:29:38 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 11:48:42 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,23 +104,20 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& src) {
 }
 
 void BitcoinExchange::exchange(std::string line) const {
-    std::string date = line.substr(0, line.find('|'));
+    std::string date = line.substr(0, line.find('|') - 1);
     if (!checkDateFormat(date))
         return ;
 
     char*   end;
-    double  value = strtod(line.substr(line.find(',') + 2).c_str(), &end);
+    double  value = strtod(line.substr(line.find('|') + 2).c_str(), &end);
     if (*end || !std::isfinite(value) || value < 0) {
         std::cout << "Error: invalid value." << std::endl;
         return ;
     }
 
-    for (std::map<std::string, double>::const_iterator it = database.begin(); it != database.end(); it ++) {
-        if (date >= it->first) {
-            std::cout << date << " => " << value << " = " << std::setprecision(5) << value * it->second << std::endl;
-            return ;
-        }
-    }
+    std::map<std::string, double>::const_iterator it = database.upper_bound(date);
+    it--;
+    std::cout << date << " => " << value << " = " << std::setprecision(5) << value * it->second << std::endl;
 }
 
 void BitcoinExchange::printDatabase() const
