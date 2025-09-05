@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 11:48:42 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 13:14:09 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ BitcoinExchange::BitcoinExchange(std::string file) {
         database[date] = value;
     }
     if (data.bad()) {
+        data.close();
         throw (std::runtime_error("Error reading database"));
     }
+    data.close();
 
 }
 
