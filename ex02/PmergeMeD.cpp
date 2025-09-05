@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 09:15:21 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 14:22:52 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ PmergeMeD::PmergeMeD() {
 
 }
 
-PmergeMeD::PmergeMeD(const PmergeMeD& src) {
+PmergeMeD::PmergeMeD(const PmergeMeD& src): jacobsthal(src.jacobsthal),
+    comparisons(src.comparisons), orderMax(src.orderMax) {
 
     assign(src.begin(), src.end());
 
 }
 
-PmergeMeD::PmergeMeD(const std::deque<Number>& values) {
+PmergeMeD::PmergeMeD(const std::deque<Number>& values): comparisons(0) {
 
     orderMax = values.size() / 2;
     size_t twoPow = 2;
@@ -45,7 +46,11 @@ PmergeMeD::~PmergeMeD() {
 PmergeMeD& PmergeMeD::operator=(const PmergeMeD& src) {
 
     assign(src.begin(), src.end());
+    jacobsthal = src.jacobsthal;
+    comparisons = src.comparisons;
+    orderMax = src.orderMax;
     return (*this);
+
 }
 
 std::deque<Number> PmergeMeD::extractPending() {
@@ -58,6 +63,7 @@ std::deque<Number> PmergeMeD::extractPending() {
     for (size_t i = 0; i + 1 < size(); i++) {
 
         if (at(i) < at(i + 1)) {
+            comparisons++;
             nextB = at(i);
             erase(begin() + i);
         }
@@ -102,15 +108,18 @@ void PmergeMeD::renumber(std::deque<Number>& pending, size_t order) {
 void PmergeMeD::binaryInsert(Number nb, size_t a, size_t b) {
 
     if (at(b) <= nb){
+        comparisons++;
         insert(end(), nb);
         return ;
     }
     if (at(a) >= nb){
+        comparisons++;
         insert(begin(), nb);
         return ;
     }
     while (b - a > 1) {
         if (nb > at(a + (b - a) / 2)) {
+            comparisons++;
             a = a + (b - a) / 2;
         }
         else
@@ -155,10 +164,15 @@ void PmergeMeD::merge(std::deque<Number>& pending, size_t order) {
     }
 }
 
-bool PmergeMeD::is_sorted() {
+bool PmergeMeD::is_sorted() const {
     for (size_t i = 0; i + 1 < size(); i++) {
         if (at(i) > at(i + 1))
             return (false);
     }
     return (true);
+}
+
+size_t PmergeMeD::getComparisons() const
+{
+    return (comparisons);
 }

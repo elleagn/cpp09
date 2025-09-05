@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 10:49:20 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 14:29:59 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,14 @@ int main(int ac, char **av) {
     std::cout   << std::fixed << std::setprecision(3) << "Time to sort "
                 << size <<" elements with std::deque: "
                 << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << "us" << std::endl;
+
+    size_t compD = thingD.getComparisons();
+    size_t compV = thing.getComparisons();
+    if (compD != compV) {
+        std::cout   << "Error: number of comparisons for vector (" << compV
+                    << ") and deque (" << compD << ") are not the same." << std::endl;
+        return (1);
+    }
+    std::cout << "Comparisons: " << compD << std::endl;
     return (0);
 }

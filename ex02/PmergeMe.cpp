@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 09:14:25 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 14:57:26 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ PmergeMeV::PmergeMeV() {
 
 }
 
-PmergeMeV::PmergeMeV(const PmergeMeV& src) {
+PmergeMeV::PmergeMeV(const PmergeMeV& src): jacobsthal(src.jacobsthal),
+    comparisons(src.comparisons), orderMax(src.orderMax) {
 
     assign(src.begin(), src.end());
 
 }
 
-PmergeMeV::PmergeMeV(const std::vector<Number>& values) {
+PmergeMeV::PmergeMeV(const std::vector<Number>& values): comparisons(0) {
 
     orderMax = values.size() / 2;
     size_t twoPow = 2;
@@ -45,6 +46,9 @@ PmergeMeV::~PmergeMeV() {
 PmergeMeV& PmergeMeV::operator=(const PmergeMeV& src) {
 
     assign(src.begin(), src.end());
+    jacobsthal = src.jacobsthal;
+    comparisons = src.comparisons;
+    orderMax = src.orderMax;
     return (*this);
 }
 
@@ -57,6 +61,7 @@ std::vector<Number> PmergeMeV::extractPending() {
 
     for (PmergeMeV::iterator it = begin(); it != end() && it + 1 != end(); it++) {
 
+        comparisons++;
         if (*it < *(it + 1)) {
             nextB = *it;
             it = erase(it);
@@ -101,15 +106,18 @@ void PmergeMeV::renumber(std::vector<Number>& pending, size_t order) {
 
 void PmergeMeV::binaryInsert(Number nb, size_t a, size_t b) {
 
+    comparisons++;
     if (at(b) <= nb){
         insert(end(), nb);
         return ;
     }
+    comparisons++;
     if (at(a) >= nb){
         insert(begin(), nb);
         return ;
     }
     while (b - a > 1) {
+        comparisons++;
         if (nb > at(a + (b - a) / 2)) {
             a = a + (b - a) / 2;
         }
@@ -155,10 +163,14 @@ void PmergeMeV::merge(std::vector<Number>& pending, size_t order) {
     }
 }
 
-bool PmergeMeV::is_sorted() {
+bool PmergeMeV::is_sorted() const {
     for (size_t i = 0; i + 1 < size(); i++) {
         if (at(i) > at(i + 1))
             return (false);
     }
     return (true);
+}
+
+size_t PmergeMeV::getComparisons() const {
+    return (comparisons);
 }
