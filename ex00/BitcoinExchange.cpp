@@ -6,42 +6,26 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 13:26:56 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 13:58:06 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-int strToInt(std::string str) {
-
-    std::stringstream tmp;
-    int res;
-
-    tmp << str;
-    tmp >> res;
-    return (res);
-
-}
-
-int strToDouble(std::string str) {
-
-    std::stringstream tmp;
-    int res;
-
-    tmp << str;
-    tmp >> res;
-    return (res);
-
-}
-
 bool isLeapYear(int year) {
 
+    // year not divisible by 4
     if (year % 4)
         return (false);
+
+    // year divisible by 4 but not by 100
     if (year % 100)
         return (true);
+
+    // year divisible by 100 but not by 400
     if (year % 400)
         return (false);
+
     return (true);
 
 }
@@ -76,16 +60,24 @@ BitcoinExchange::BitcoinExchange(std::string file) {
     std::string date;
     double      value;
     char*       end;
+
     std::getline(data, line);
     while (std::getline(data, line)) {
+
+        // Get the date
         date = line.substr(0, line.find(','));
         if (!checkDateFormat(date))
             throw (std::invalid_argument("Format error in database"));
+
+        // Get the value
         value = strtod(line.substr(line.find(',') + 1).c_str(), &end);
         if (*end || !std::isfinite(value) || value < 0)
             throw (std::invalid_argument("Format error in database"));
+
         database[date] = value;
+
     }
+
     if (data.bad()) {
         data.close();
         throw (std::runtime_error("Error reading database"));
@@ -94,31 +86,36 @@ BitcoinExchange::BitcoinExchange(std::string file) {
 
 }
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& src): database(src.database) {
-
-}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& src): database(src.database) {}
 
 BitcoinExchange::~BitcoinExchange() {}
 
 BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& src) {
+
     database = src.database;
     return (*this);
+
 }
 
 void BitcoinExchange::exchange(std::string line) const {
+
+    // Deal with cases without separator so retrieving value does not segfault
     size_t sep = line.find('|');
     if (sep > line.size() - 3) {
         std::cout << "Error: bad input => " << line << std::endl;
+        return;
     }
 
-    std::string date = line.substr(0, line.find('|') - 1);
+    // Get the date
+    std::string date = line.substr(0, sep - 1);
     if (!checkDateFormat(date))
         return ;
 
+    // Get the value
     char*   end;
-    double  value = strtod(line.substr(line.find('|') + 2).c_str(), &end);
-    if (*end || !std::isfinite(value) || value < 0 || value > 1000) {
-        std::cout << "Error: invalid value => " << value << std::endl;
+    double  value = strtod(line.substr(sep + 2).c_str(), &end);
+    if (*end || !std::isfinite(value)) {
+        std::cout << "Error: invalid value => " << line.substr(sep + 2) << std::endl;
         return ;
     }
     if (value < 0) {
@@ -127,8 +124,10 @@ void BitcoinExchange::exchange(std::string line) const {
     }
     if (value > 1000) {
         std::cout << "Error: too large a number." << std::endl;
+        return ;
     }
 
+    // Print the value to the standard output
     std::map<std::string, double>::const_iterator it = database.upper_bound(date);
     it--;
     std::cout << date << " => " << value << " = " << std::setprecision(5) << value * it->second << std::endl;
@@ -158,9 +157,10 @@ bool BitcoinExchange::checkDateFormat(std::string date) const{
         return (false);
     }
 
-    int year = strToInt(date.substr(0, 4));
-    int month = strToInt(date.substr(5, 2));
-    int day = strToInt(date.substr(8, 2));
+    int year = atoi(date.substr(0, 4).c_str());
+    int month = atoi(date.substr(5, 2).c_str());
+    int day = atoi(date.substr(8, 2).c_str());
+
     if (month < 1 || month > 12 || day < 1 || day > 31)
         res = false;
     if (res && day == 31 && ((month % 2 == 0 && month <= 6)
