@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:55:02 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 11:01:00 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 11:24:30 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <ctime>
 #include <fstream>
 #include <cstdlib>
+#include <cmath>
 
 class BitcoinExchange {
 
@@ -29,7 +30,7 @@ class BitcoinExchange {
         std::map <std::string, double> database;
 
         BitcoinExchange();
-        bool checkDateFormat(std::string date);
+        bool checkDateFormat(std::string date) const;
 
         static std::string currentDate;
 
@@ -40,7 +41,7 @@ class BitcoinExchange {
 
         BitcoinExchange& operator=(const BitcoinExchange& src);
 
-        void exchange(std::string file);
+        void exchange(std::string line)const;
         void printDatabase() const;
 
 

@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 11:05:20 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 11:29:38 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ BitcoinExchange::BitcoinExchange(std::string file) {
         if (!checkDateFormat(date))
             throw (std::invalid_argument("Format error in database"));
         value = strtod(line.substr(line.find(',') + 1).c_str(), &end);
-        if (*end || value < 0)
+        if (*end || !std::isfinite(value) || value < 0)
             throw (std::invalid_argument("Format error in database"));
         database[date] = value;
     }
@@ -103,6 +103,26 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& src) {
     return (*this);
 }
 
+void BitcoinExchange::exchange(std::string line) const {
+    std::string date = line.substr(0, line.find('|'));
+    if (!checkDateFormat(date))
+        return ;
+
+    char*   end;
+    double  value = strtod(line.substr(line.find(',') + 2).c_str(), &end);
+    if (*end || !std::isfinite(value) || value < 0) {
+        std::cout << "Error: invalid value." << std::endl;
+        return ;
+    }
+
+    for (std::map<std::string, double>::const_iterator it = database.begin(); it != database.end(); it ++) {
+        if (date >= it->first) {
+            std::cout << date << " => " << value << " = " << std::setprecision(5) << value * it->second << std::endl;
+            return ;
+        }
+    }
+}
+
 void BitcoinExchange::printDatabase() const
 {
     for (std::map<std::string, double>::const_iterator it = database.begin(); it != database.end(); it ++) {
@@ -110,7 +130,7 @@ void BitcoinExchange::printDatabase() const
     }
 }
 
-bool BitcoinExchange::checkDateFormat(std::string date) {
+bool BitcoinExchange::checkDateFormat(std::string date) const{
 
     bool res = true;
 
@@ -155,3 +175,4 @@ bool BitcoinExchange::checkDateFormat(std::string date) {
     return (res);
 
 }
+

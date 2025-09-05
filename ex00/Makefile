@@ -6,11 +6,11 @@
 #    By: gozon <gozon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 11:02:35 by gozon             #+#    #+#              #
-#    Updated: 2025/09/05 10:40:20 by gozon            ###   ########.fr        #
+#    Updated: 2025/09/05 11:32:57 by gozon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = PmergeMe
+NAME = btc
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 CPP =	main.cpp BitcoinExchange.cpp
