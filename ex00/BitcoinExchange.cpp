@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 10:45:52 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 11:05:20 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ std::string getCurrentDate() {
     tm* gmtNow = gmtime(&now);
     std::stringstream date;
 
-    date << gmtNow->tm_year << "-" << gmtNow->tm_mon + 1 << "-" << gmtNow->tm_mday;
+    date    << gmtNow->tm_year + 1900 << "-"
+            << std::setfill('0') << std::setw(2) << gmtNow->tm_mon + 1 << "-"
+            << std::setfill('0') << std::setw(2) << gmtNow->tm_mday;
 
     return (date.str());
 
@@ -77,7 +79,7 @@ BitcoinExchange::BitcoinExchange(std::string file) {
     std::getline(data, line);
     while (std::getline(data, line)) {
         date = line.substr(0, line.find(','));
-        if (checkDateFormat(date))
+        if (!checkDateFormat(date))
             throw (std::invalid_argument("Format error in database"));
         value = strtod(line.substr(line.find(',') + 1).c_str(), &end);
         if (*end || value < 0)
@@ -122,6 +124,7 @@ bool BitcoinExchange::checkDateFormat(std::string date) {
     }
     if (!res) {
         std::cout << "Error: Invalid date format." << std::endl;
+        return (false);
     }
 
     int year = strToInt(date.substr(0, 4));
@@ -136,12 +139,14 @@ bool BitcoinExchange::checkDateFormat(std::string date) {
         res = false;
     if (!res) {
         std::cout << "Error: date doesn't exist." << std::endl;
+        return (false);
     }
 
     if (res && date < "2009-01-02") {
         res = false;
         std::cout << "Error: no data prior to January 2nd 2009." << std::endl;
     }
+
     if (res && date > currentDate) {
         std::cout << "Error: can't predict the future." << std::endl;
         res = false;

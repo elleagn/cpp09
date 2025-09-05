@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:55:02 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 10:40:47 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 11:01:00 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <exception>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <ctime>
 #include <fstream>
 #include <cstdlib>

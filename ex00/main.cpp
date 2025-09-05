@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:43:37 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 10:44:28 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 11:03:47 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,4 @@
 
 int main() {
     BitcoinExchange btc("data.csv");
-    btc.printDatabase();
 }
