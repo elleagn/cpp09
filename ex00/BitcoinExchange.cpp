@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 13:14:09 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 13:26:56 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,27 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& src) {
 }
 
 void BitcoinExchange::exchange(std::string line) const {
+    size_t sep = line.find('|');
+    if (sep > line.size() - 3) {
+        std::cout << "Error: bad input => " << line << std::endl;
+    }
+
     std::string date = line.substr(0, line.find('|') - 1);
     if (!checkDateFormat(date))
         return ;
 
     char*   end;
     double  value = strtod(line.substr(line.find('|') + 2).c_str(), &end);
-    if (*end || !std::isfinite(value) || value < 0) {
-        std::cout << "Error: invalid value." << std::endl;
+    if (*end || !std::isfinite(value) || value < 0 || value > 1000) {
+        std::cout << "Error: invalid value => " << value << std::endl;
         return ;
+    }
+    if (value < 0) {
+        std::cout << "Error: not a positive number." << std::endl;
+        return ;
+    }
+    if (value > 1000) {
+        std::cout << "Error: too large a number." << std::endl;
     }
 
     std::map<std::string, double>::const_iterator it = database.upper_bound(date);
