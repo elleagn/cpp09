@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:55:02 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 09:57:49 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 10:40:47 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ class BitcoinExchange {
         BitcoinExchange& operator=(const BitcoinExchange& src);
 
         void exchange(std::string file);
+        void printDatabase() const;
 
 
 };

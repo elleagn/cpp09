@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:54:36 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 10:14:04 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 10:45:52 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ BitcoinExchange::BitcoinExchange() {
 
 BitcoinExchange::BitcoinExchange(std::string file) {
 
-    std::ifstream data(file);
+    std::ifstream data(file.c_str());
     if (!data.is_open()) {
         throw std::runtime_error("Error: Could not open database.");
     }
@@ -88,6 +88,24 @@ BitcoinExchange::BitcoinExchange(std::string file) {
         throw (std::runtime_error("Error reading database"));
     }
 
+}
+
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& src): database(src.database) {
+
+}
+
+BitcoinExchange::~BitcoinExchange() {}
+
+BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& src) {
+    database = src.database;
+    return (*this);
+}
+
+void BitcoinExchange::printDatabase() const
+{
+    for (std::map<std::string, double>::const_iterator it = database.begin(); it != database.end(); it ++) {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
 }
 
 bool BitcoinExchange::checkDateFormat(std::string date) {
