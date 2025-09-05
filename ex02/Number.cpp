@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:45:22 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 13:50:50 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 08:45:39 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 Number::Number(): ab(NULL), index(NULL) {}
 
-Number::Number(unsigned long value, size_t size): value(value), size(size) {
+Number::Number(int value, size_t size): value(value), size(size) {
 
     ab = new bool[size];
     index = new size_t[size];
@@ -98,12 +98,12 @@ bool Number::isA(size_t order) const {
     return (ab[order]);
 }
 
-void Number::setValue(unsigned long value)
+void Number::setValue(int value)
 {
     this->value = value;
 }
 
-unsigned long Number::getValue() const {
+int Number::getValue() const {
     return (value);
 }
 

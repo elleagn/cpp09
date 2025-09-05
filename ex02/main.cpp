@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 09:10:10 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 14:37:34 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 09:10:10 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include <cmath>
+#include <climits>
 
 void sort(PmergeMeV& values, size_t order) {
 
@@ -36,23 +38,43 @@ void sort(PmergeMeD& values, size_t order) {
 
 }
 
-int main(int ac, char **av) {
-    std::vector<Number> vect;
-    int size = 1000;
-    Number num(0, size / 2);
+std::vector<Number> parseValues(int ac, char **av) {
 
-    (void)av;
-    (void)ac;
+    std::vector<Number> values;
+    float               nbFloat;
+    char*               end;
 
-    for (int i = 0; i < size; i++) {
-        num.setValue(i);
-        vect.insert(vect.end(), num);
+    for (int i = 1; i < ac; i++) {
+        nbFloat = strtof(av[i], &end);
+        if (*end != 0 || !std::isfinite(nbFloat) || nbFloat < 0
+            || nbFloat > (float)INT_MAX || roundf(nbFloat) != nbFloat)
+            throw std::invalid_argument("Invalid argument.");
+        values.insert(values.end(), Number(roundf(nbFloat), (ac - 1) / 2));
     }
 
-    std::random_shuffle(vect.begin(), vect.end());
+    return (values);
+}
+
+int main(int ac, char **av) {
+    std::vector<Number> vect;
+    size_t size;
+
+    if (ac < 2) {
+        std::cerr << "Error: not enough arguments" << std::endl;
+        return (1);
+    }
+
+    try {
+        vect = parseValues(ac, av);
+    }
+    catch (std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return (1);
+    }
+    size = vect.size();
 
     std::cout << "Before: ";
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         std::cout << vect[i].getValue() << " ";
     }
     std::cout << std::endl;
@@ -74,7 +96,7 @@ int main(int ac, char **av) {
         return (1);
     }
     std::cout << "After: ";
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         std::cout << thing[i].getValue() << " ";
     }
     std::cout <<std::endl;

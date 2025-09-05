@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/04 14:54:13 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/05 09:15:21 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,11 @@ PmergeMeD::PmergeMeD(const std::deque<Number>& values) {
     size_t twoPow = 2;
     size_t tk = 1;
 
-    std::cout << "jacobsthal:";
     while (tk <= orderMax) {
         tk = twoPow - tk;
-        std::cout << " " << tk;
         jacobsthal.insert(jacobsthal.end(), tk);
         twoPow *= 2;
     }
-    std::cout << std::endl;
-
 
     assign(values.begin(), values.end());
 
