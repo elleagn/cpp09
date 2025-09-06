@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/05 14:57:26 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/06 12:54:27 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,6 @@ void PmergeMeV::renumber(std::vector<Number>& pending, size_t order) {
 void PmergeMeV::binaryInsert(Number nb, size_t a, size_t b) {
 
     comparisons++;
-    if (at(b) <= nb){
-        insert(end(), nb);
-        return ;
-    }
-    comparisons++;
     if (at(a) >= nb){
         insert(begin(), nb);
         return ;
@@ -159,6 +154,11 @@ void PmergeMeV::merge(std::vector<Number>& pending, size_t order) {
     }
 
     if (pending.size() > jacobMax) {
+        comparisons++;
+        if (at(size() - 1) <= pending.back()){
+            insert(end(), pending.back());
+            return ;
+        }
         binaryInsert(pending.back(), 0, size() - 1);
     }
 }
