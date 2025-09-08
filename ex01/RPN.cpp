@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 08:59:40 by gozon             #+#    #+#             */
-/*   Updated: 2025/08/28 11:20:23 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/08 11:12:51 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ bool RPN::treatOperator(std::string op) {
     int b = pile.top();
     pile.pop();
 
-    std::cout << "a: " << a << " b: " << b << std::endl;
-
     if (op == "+")
         pile.push(a + b);
     else if (op == "-")
@@ -82,15 +80,11 @@ void RPN::calculate(std::string expr) {
 
     for (size_t i = expr.find_first_not_of(' '); i < expr.size(); i = expr.find_first_not_of(' ', i)) {
 
-        std::cout << "Index in expr: " << i << std::endl;
         space = std::min (expr.find_first_of(' ', i), expr.size());
-        std::cout << "Space: " << space << std::endl;
         current = expr.substr(i, space - i);
-        std::cout << "Current: ." << current << "." << std::endl;
         if (isNumber(current))
             pile.push(atoi(current.c_str()));
         else if (!treatOperator(current)) {
-            std::cout << "Treat operator error." << std::endl;
             std::cerr << "Error" << std::endl;
             return ;
         }
