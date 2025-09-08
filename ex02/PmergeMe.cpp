@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/08 10:21:20 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/08 11:36:57 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,19 @@ void PmergeMeV::binaryInsert(Number nb, size_t low, size_t high) {
 
     size_t mid;
 
-    while (low < high) {
+    while (low <= high) {
         mid = low + (high - low) / 2;
         comparisons++;
         if (nb > at(mid)) {
             low = mid + 1;
         }
-        else
-            high = mid;
+        else {
+            if (mid == 0)
+                break;
+            high = mid - 1;
+        }
     }
+ //   std::cout << low << std::endl;
 
     insert(begin() + low, nb);
 
@@ -145,7 +149,8 @@ void PmergeMeV::merge(std::vector<Number>& pending, size_t order) {
         for (size_t k = std::min(jacobMax, jacobsthal[i]) - 1; k >= jacobsthal[i - 1]; k--) {
 
             upperIndex = findUpperIndex(k, upperIndex, order);
-            binaryInsert(pending[k], 0, upperIndex);
+            std::cout << upperIndex;
+            binaryInsert(pending[k], 0, upperIndex - 1);
 
         }
 

@@ -4,7 +4,7 @@ runs=100
 sum=0
 max=0
 count=0
-size=32
+size=31
 
 for i in $(seq 1 $runs); do
     cmp=$(./PmergeMe $(shuf -i 1-1000 -n $size | tr "\n" " ") | grep "Comparisons:" | awk '{print $2}')
