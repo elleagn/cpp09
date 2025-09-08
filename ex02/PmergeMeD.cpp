@@ -6,7 +6,7 @@
 /*   By: gozon <gozon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 08:51:47 by gozon             #+#    #+#             */
-/*   Updated: 2025/09/06 12:51:52 by gozon            ###   ########.fr       */
+/*   Updated: 2025/09/08 10:22:28 by gozon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,23 +105,21 @@ void PmergeMeD::renumber(std::deque<Number>& pending, size_t order) {
 
 }
 
-void PmergeMeD::binaryInsert(Number nb, size_t a, size_t b) {
+void PmergeMeD::binaryInsert(Number nb, size_t low, size_t high) {
 
-    comparisons++;
-    if (at(a) >= nb){
-        insert(begin(), nb);
-        return ;
-    }
-    while (b - a > 1) {
+    size_t mid;
+
+    while (low < high) {
+        mid = low + (high - low) / 2;
         comparisons++;
-        if (nb > at(a + (b - a) / 2)) {
-            a = a + (b - a) / 2;
+        if (nb > at(mid)) {
+            low = mid + 1;
         }
         else
-            b = a + (b - a) / 2;
+            high = mid;
     }
 
-    insert(begin() + b, nb);
+    insert(begin() + low, nb);
 
 }
 
@@ -155,11 +153,6 @@ void PmergeMeD::merge(std::deque<Number>& pending, size_t order) {
     }
 
     if (pending.size() > jacobMax) {
-        comparisons++;
-        if (at(size() - 1) <= pending.back()){
-            insert(end(), pending.back());
-            return ;
-        }
         binaryInsert(pending.back(), 0, size() - 1);
     }
 }
